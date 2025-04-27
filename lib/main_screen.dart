@@ -1,51 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'main_screen_controller.dart';
 import 'main_screen_painter.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  MainScreenState createState() => MainScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class MainScreenState extends State<MainScreen> {
-  Offset bluePos = Offset.zero;
-  Offset? redPos;
-  final FocusNode _focusNode = FocusNode();
+class _MainScreenState extends State<MainScreen> {
+  late MainScreenController controller;
 
-  void move(Offset offset) => setState(() => bluePos += offset);
-  void moveLeft() => move(Offset(-10, 0));
-  void moveRight() => move(Offset(10, 0));
-  void moveUp() => move(Offset(0, -10));
-  void moveDown() => move(Offset(0, 10));
+  @override
+  void initState() {
+    super.initState();
+    controller = MainScreenController(setState);
+  }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    controller.dispose();
     super.dispose();
-  }
-
-  void _handleKeyEvent(KeyEvent event) {
-    if (event is! KeyDownEvent) {
-      return;
-    }
-    switch (event.logicalKey) {
-      case LogicalKeyboardKey.arrowLeft:
-        moveLeft();
-      case LogicalKeyboardKey.arrowRight:
-        moveRight();
-      case LogicalKeyboardKey.arrowUp:
-        moveUp();
-      case LogicalKeyboardKey.arrowDown:
-        moveDown();
-    }
-  }
-
-  void _handleTapDown(TapDownDetails tap) {
-    setState(() {
-      bluePos = tap.localPosition;
-    });
   }
 
   @override
@@ -53,18 +29,21 @@ class MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Move the Square')),
       body: KeyboardListener(
-        focusNode: _focusNode,
-        onKeyEvent: _handleKeyEvent,
+        focusNode: controller.focusNode,
+        onKeyEvent: controller.handleKeyEvent,
         autofocus: true,
         child: GestureDetector(
-          onTapDown: _handleTapDown,
+          onTapDown: controller.handleTapDown,
           child: MouseRegion(
-            onHover: (event) => setState(() => redPos = event.localPosition),
+            onHover: controller.handleHover,
             child: Column(
               children: [
                 Expanded(
                   child: CustomPaint(
-                    painter: MainScreenPainter(bluePos, redPos),
+                    painter: MainScreenPainter(
+                      controller.bluePos,
+                      controller.redPos,
+                    ),
                     child: Container(),
                   ),
                 ),
@@ -72,12 +51,12 @@ class MainScreenState extends State<MainScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: moveLeft,
+                      onPressed: controller.moveLeft,
                       child: const Text('Left'),
                     ),
                     const SizedBox(width: 20),
                     ElevatedButton(
-                      onPressed: moveRight,
+                      onPressed: controller.moveRight,
                       child: const Text('Right'),
                     ),
                   ],
