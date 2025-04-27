@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-const double blueSquareSize = 50;
-const double redShapeSize = 10;
+const double blueSize = 40;
+const double redSize = 18;
+final Paint blueColor = Paint()..color = Colors.blue;
+final Paint redColor = Paint()..color = Colors.red;
 
 class MainScreenPainter extends CustomPainter {
   final Offset bluePos;
@@ -10,18 +12,9 @@ class MainScreenPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final blue = Paint()..color = Colors.blue;
-    final red = Paint()..color = Colors.red;
-
-    final rect = Rect.fromCenter(
-      center: bluePos,
-      width: blueSquareSize,
-      height: blueSquareSize,
-    );
-    canvas.drawRect(rect, blue);
-
+    canvas.drawCircle(bluePos, blueSize, blueColor);
     if (redPos != null) {
-      canvas.drawCircle(redPos!, redShapeSize, red);
+      canvas.drawCircle(redPos!, redSize, redColor);
     }
   }
 
