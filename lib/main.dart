@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 const double blueSquareSize = 50;
-const double redShapeSize = 100;
+const double redShapeSize = 10;
 
 void main() {
   runApp(const MainApp());
@@ -27,7 +27,7 @@ class MainScreen extends StatefulWidget {
 class MainScreenState extends State<MainScreen> {
   double x = blueSquareSize / 2;
   double y = blueSquareSize / 2;
-  Offset? pointer;
+  Offset? redPos;
   final FocusNode _focusNode = FocusNode();
 
   void moveLeft() => setState(() => x -= 10);
@@ -75,12 +75,12 @@ class MainScreenState extends State<MainScreen> {
         child: GestureDetector(
           onTapDown: _handleTapDown,
           child: MouseRegion(
-            onHover: (event) => setState(() => pointer = event.localPosition),
+            onHover: (event) => setState(() => redPos = event.localPosition),
             child: Column(
               children: [
                 Expanded(
                   child: CustomPaint(
-                    painter: SquarePainter(x, y, pointer),
+                    painter: SquarePainter(x, y, redPos),
                     child: Container(),
                   ),
                 ),
@@ -111,8 +111,8 @@ class MainScreenState extends State<MainScreen> {
 class SquarePainter extends CustomPainter {
   final double x;
   final double y;
-  final Offset? pointer;
-  SquarePainter(this.x, this.y, this.pointer);
+  final Offset? redPos;
+  SquarePainter(this.x, this.y, this.redPos);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -126,8 +126,8 @@ class SquarePainter extends CustomPainter {
     final height = blueSquareSize;
     canvas.drawRect(Rect.fromLTWH(left, top, width, height), blue);
 
-    if (pointer != null) {
-      canvas.drawCircle(pointer!, redShapeSize, red);
+    if (redPos != null) {
+      canvas.drawCircle(redPos!, redShapeSize, red);
     }
   }
 
@@ -135,6 +135,6 @@ class SquarePainter extends CustomPainter {
   bool shouldRepaint(covariant SquarePainter oldDelegate) {
     return oldDelegate.x != x ||
         oldDelegate.y != y ||
-        oldDelegate.pointer != pointer;
+        oldDelegate.redPos != redPos;
   }
 }
