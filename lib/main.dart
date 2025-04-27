@@ -25,15 +25,15 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  double x = blueSquareSize / 2;
-  double y = blueSquareSize / 2;
+  Offset bluePos = Offset(0, 0);
   Offset? redPos;
   final FocusNode _focusNode = FocusNode();
 
-  void moveLeft() => setState(() => x -= 10);
-  void moveRight() => setState(() => x += 10);
-  void moveUp() => setState(() => y -= 10);
-  void moveDown() => setState(() => y += 10);
+  void move(Offset offset) => setState(() => bluePos += offset);
+  void moveLeft() => move(Offset(-10, 0));
+  void moveRight() => move(Offset(10, 0));
+  void moveUp() => move(Offset(0, -10));
+  void moveDown() => move(Offset(0, 10));
 
   @override
   void dispose() {
@@ -59,8 +59,7 @@ class MainScreenState extends State<MainScreen> {
 
   void _handleTapDown(TapDownDetails tap) {
     setState(() {
-      x = tap.localPosition.dx;
-      y = tap.localPosition.dy;
+      bluePos = tap.localPosition;
     });
   }
 
@@ -80,7 +79,7 @@ class MainScreenState extends State<MainScreen> {
               children: [
                 Expanded(
                   child: CustomPaint(
-                    painter: SquarePainter(x, y, redPos),
+                    painter: SquarePainter(bluePos, redPos),
                     child: Container(),
                   ),
                 ),
@@ -109,22 +108,21 @@ class MainScreenState extends State<MainScreen> {
 }
 
 class SquarePainter extends CustomPainter {
-  final double x;
-  final double y;
+  final Offset bluePos;
   final Offset? redPos;
-  SquarePainter(this.x, this.y, this.redPos);
+  SquarePainter(this.bluePos, this.redPos);
 
   @override
   void paint(Canvas canvas, Size size) {
     final blue = Paint()..color = Colors.blue;
     final red = Paint()..color = Colors.red;
 
-    // TODO(isandrk): L - 50/2, T - 50/2 (to account for square size, position it by the middle).
-    final left = x - blueSquareSize / 2; // size.width / 2 + x
-    final top = y - blueSquareSize / 2; // size.height / 2 - y
-    final width = blueSquareSize;
-    final height = blueSquareSize;
-    canvas.drawRect(Rect.fromLTWH(left, top, width, height), blue);
+    final rect = Rect.fromCenter(
+      center: bluePos,
+      width: blueSquareSize,
+      height: blueSquareSize,
+    );
+    canvas.drawRect(rect, blue);
 
     if (redPos != null) {
       canvas.drawCircle(redPos!, redShapeSize, red);
@@ -133,8 +131,6 @@ class SquarePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant SquarePainter oldDelegate) {
-    return oldDelegate.x != x ||
-        oldDelegate.y != y ||
-        oldDelegate.redPos != redPos;
+    return oldDelegate.bluePos != bluePos || oldDelegate.redPos != redPos;
   }
 }
