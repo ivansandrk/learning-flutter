@@ -40,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 Expanded(
                   child: CustomPaint(
-                    painter: Painter(inputHandler.bluePos, inputHandler.redPos),
+                    painter: Painter(inputHandler.state),
                     child: Container(),
                   ),
                 ),

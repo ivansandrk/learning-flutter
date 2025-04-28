@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'game_state.dart';
 
 class InputHandler {
   final void Function(VoidCallback) setState;
-  Offset bluePos = Offset.zero;
-  Offset? redPos;
   final FocusNode focusNode = FocusNode();
+  // TODO(isandrk): Game state should be owned by logic? Or even one lvl above.
+  GameState state = GameState();
 
+  // TODO(isandrk): setState goes in the logic. or state itself?
   InputHandler(this.setState);
 
-  void move(Offset offset) => setState(() => bluePos += offset);
+  void move(Offset offset) => setState(() => state.bluePos += offset);
   void moveLeft() => move(Offset(-10, 0));
   void moveRight() => move(Offset(10, 0));
   void moveUp() => move(Offset(0, -10));
@@ -31,11 +33,11 @@ class InputHandler {
   }
 
   void handleTapDown(TapDownDetails tap) {
-    setState(() => bluePos = tap.localPosition);
+    setState(() => state.bluePos = tap.localPosition);
   }
 
   void handleHover(PointerHoverEvent pointer) {
-    setState(() => redPos = pointer.localPosition);
+    setState(() => state.redPos = pointer.localPosition);
   }
 
   void dispose() {
