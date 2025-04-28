@@ -13,3 +13,27 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(home: MainScreen());
   }
 }
+
+/*
+  main
+
+  screen:
+  * ?
+
+  canvas:
+  * ?
+
+  input:
+  * handling input (setting state)
+
+  painter:
+  * drawing the snake on the canvas
+
+  logic:
+  * handling input
+  * advancing game state
+
+  state:
+  * input (like key up pressed, or touch/mouse click at xy)
+  * snake position
+*/

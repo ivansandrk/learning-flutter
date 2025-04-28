@@ -5,10 +5,10 @@ const double redSize = 18;
 final Paint blueColor = Paint()..color = Colors.blue;
 final Paint redColor = Paint()..color = Colors.red;
 
-class MainScreenPainter extends CustomPainter {
+class Painter extends CustomPainter {
   final Offset bluePos;
   final Offset? redPos;
-  MainScreenPainter(this.bluePos, this.redPos);
+  Painter(this.bluePos, this.redPos);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -19,7 +19,7 @@ class MainScreenPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant MainScreenPainter oldDelegate) {
+  bool shouldRepaint(covariant Painter oldDelegate) {
     return oldDelegate.bluePos != bluePos || oldDelegate.redPos != redPos;
   }
 }

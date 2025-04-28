@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MainScreenController {
+class InputHandler {
   final void Function(VoidCallback) setState;
   Offset bluePos = Offset.zero;
   Offset? redPos;
   final FocusNode focusNode = FocusNode();
 
-  MainScreenController(this.setState);
+  InputHandler(this.setState);
 
   void move(Offset offset) => setState(() => bluePos += offset);
   void moveLeft() => move(Offset(-10, 0));

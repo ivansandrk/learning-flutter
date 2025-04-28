@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'main_screen_controller.dart';
-import 'main_screen_painter.dart';
+import 'input_handler.dart';
+import 'painter.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -10,12 +10,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late MainScreenController controller;
+  late InputHandler controller;
 
   @override
   void initState() {
     super.initState();
-    controller = MainScreenController(setState);
+    controller = InputHandler(setState);
   }
 
   @override
@@ -40,10 +40,7 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 Expanded(
                   child: CustomPaint(
-                    painter: MainScreenPainter(
-                      controller.bluePos,
-                      controller.redPos,
-                    ),
+                    painter: Painter(controller.bluePos, controller.redPos),
                     child: Container(),
                   ),
                 ),
