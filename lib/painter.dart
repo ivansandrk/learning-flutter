@@ -19,7 +19,7 @@ class Painter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant Painter oldDelegate) {
-    return oldDelegate.bluePos != bluePos || oldDelegate.redPos != redPos;
+  bool shouldRepaint(covariant Painter old) {
+    return old.bluePos != bluePos || old.redPos != redPos;
   }
 }

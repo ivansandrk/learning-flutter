@@ -10,17 +10,17 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late InputHandler controller;
+  late InputHandler inputHandler;
 
   @override
   void initState() {
     super.initState();
-    controller = InputHandler(setState);
+    inputHandler = InputHandler(setState);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    inputHandler.dispose();
     super.dispose();
   }
 
@@ -29,18 +29,18 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Move the Square')),
       body: KeyboardListener(
-        focusNode: controller.focusNode,
-        onKeyEvent: controller.handleKeyEvent,
+        focusNode: inputHandler.focusNode,
+        onKeyEvent: inputHandler.handleKeyEvent,
         autofocus: true,
         child: GestureDetector(
-          onTapDown: controller.handleTapDown,
+          onTapDown: inputHandler.handleTapDown,
           child: MouseRegion(
-            onHover: controller.handleHover,
+            onHover: inputHandler.handleHover,
             child: Column(
               children: [
                 Expanded(
                   child: CustomPaint(
-                    painter: Painter(controller.bluePos, controller.redPos),
+                    painter: Painter(inputHandler.bluePos, inputHandler.redPos),
                     child: Container(),
                   ),
                 ),
@@ -48,12 +48,12 @@ class _MainScreenState extends State<MainScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: controller.moveLeft,
+                      onPressed: inputHandler.moveLeft,
                       child: const Text('Left'),
                     ),
                     const SizedBox(width: 20),
                     ElevatedButton(
-                      onPressed: controller.moveRight,
+                      onPressed: inputHandler.moveRight,
                       child: const Text('Right'),
                     ),
                   ],
