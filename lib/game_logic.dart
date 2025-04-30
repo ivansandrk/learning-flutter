@@ -10,8 +10,8 @@ class GameLogic extends ChangeNotifier {
   // GameLogic could be just one UpdateState pure function;
   // takes previous state and input and outputs next state.
   // (probably also needs time delta).
-  //final bluePos = ValueNotifier<Offset>(Offset.zero);
-  final state = ValueNotifier<GameState>(GameState(Offset.zero, null));
+  // final bluePos = ValueNotifier<Offset>(Offset.zero);
+  final state = GameState();
   late Timer _timer;
   Input _input = Input();
 
@@ -46,32 +46,20 @@ class GameLogic extends ChangeNotifier {
     if (_input.right) moveBlue(Offset(10, 0));
 
     if (_input.tap != null) {
-      // TODO(isandrk): Update UI?
-      state.value = state.value.copyWith(bluePos: _input.tap!);
-      // state.value = GameState(_input.tap!, state.value.redPos);
-      // state.value.bluePos = _input.tap!;
-      // state.notifyListeners();
+      state.bluePos = _input.tap!;
     }
 
     if (_input.hover != null) {
-      // TODO(isandrk): Update UI?
-      // state.value.redPos = _input.hover!;
-      // state.value = GameState(state.value.bluePos, _input.hover!);
-      state.value = state.value.copyWith(redPos: _input.hover!);
+      state.redPos = _input.hover!;
     }
 
-    //notifyListeners();
+    notifyListeners();
   }
 
   void moveBlue(Offset offset) {
-    // TODO(isandrk): This needs to update UI somehow?
-    // Could either be here, or in GameState.
-    state.value = state.value.copyWith(bluePos: state.value.bluePos + offset);
+    // TODO: Update UI in GameState directly?
+    // GameState.setBlue() { blue = newBlue; notifyListeners(); }
 
-    // state.value = GameState(state.value.bluePos + offset, state.value.redPos);
-    // state.value.bluePos += offset;
-
-    // setState(() => state.bluePos += offset);
-    //notifyListeners();
+    state.bluePos += offset;
   }
 }
