@@ -1,50 +1,55 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'game_logic.dart';
-import 'input.dart';
+import 'input_event.dart';
 
 class InputHandler {
-  Input input = Input();
-  final GameLogic _gameLogic;
   final FocusNode focusNode = FocusNode();
+  // TODO: StreamController / StreamController.broadcast().
+  // TODO: InputEventBus? Another middle-man class, probably overkill.
+  //       But that does go in the direction of my Event based system...
+  //       (everything becomes an event).
+  final _stream = StreamController<InputEvent>.broadcast();
 
-  InputHandler(this._gameLogic);
+  Stream<InputEvent> get stream => _stream.stream;
 
-  void handleKeyEvent(KeyEvent event) {
-    input = Input();
-    final isKeyDown = event is KeyDownEvent;
-    switch (event.logicalKey) {
-      case LogicalKeyboardKey.arrowUp:
-        input.up = isKeyDown;
-      case LogicalKeyboardKey.arrowDown:
-        input.down = isKeyDown;
-      case LogicalKeyboardKey.arrowLeft:
-        input.left = isKeyDown;
-      case LogicalKeyboardKey.arrowRight:
-        input.right = isKeyDown;
-    }
+  InputHandler();
 
-    _gameLogic.updateInput(input);
-  }
-
-  void handleTapDown(TapDownDetails tap) {
-    input = Input();
-    input.tap = tap.localPosition;
-    // setState(() => state.bluePos = tap.localPosition);
-
-    _gameLogic.updateInput(input);
-  }
-
-  void handleHover(PointerHoverEvent pointer) {
-    input = Input();
-    input.hover = pointer.localPosition;
-    // setState(() => state.redPos = pointer.localPosition);
-
-    _gameLogic.updateInput(input);
+  void emit(InputEvent event) {
+    _stream.add(event);
   }
 
   // TODO(isandrk): When is dispose needed?
   void dispose() {
+    _stream.close();
     focusNode.dispose();
+  }
+
+  void handleKeyEvent(KeyEvent event) {
+    InputEventKey? key;
+    switch (event.logicalKey) {
+      case LogicalKeyboardKey.arrowUp:
+        key = InputEventKey.up;
+      case LogicalKeyboardKey.arrowDown:
+        key = InputEventKey.down;
+      case LogicalKeyboardKey.arrowLeft:
+        key = InputEventKey.left;
+      case LogicalKeyboardKey.arrowRight:
+        key = InputEventKey.right;
+    }
+    // TODO: This is gonna blow on any other key.
+    if (event is KeyDownEvent) {
+      return emit(KeyDownInputEvent(key!));
+    } else {
+      return emit(KeyUpInputEvent(key!));
+    }
+  }
+
+  void handleTapDown(TapDownDetails tap) {
+    emit(MouseClickInputEvent(tap.localPosition));
+  }
+
+  void handleHover(PointerHoverEvent pointer) {
+    emit(MouseMoveInputEvent(pointer.localPosition));
   }
 }

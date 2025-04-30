@@ -17,8 +17,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _gameLogic = GameLogic();
-    _inputHandler = InputHandler(_gameLogic);
+    _inputHandler = InputHandler();
+    _gameLogic = GameLogic(_inputHandler.stream);
   }
 
   @override
