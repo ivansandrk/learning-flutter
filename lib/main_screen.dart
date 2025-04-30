@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'game_logic.dart';
 import 'input_handler.dart';
 import 'painter.dart';
 
@@ -10,17 +12,19 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late InputHandler inputHandler;
+  late GameLogic _gameLogic;
+  late InputHandler _inputHandler;
 
   @override
   void initState() {
     super.initState();
-    inputHandler = InputHandler(setState);
+    _gameLogic = GameLogic();
+    _inputHandler = InputHandler(_gameLogic);
   }
 
   @override
   void dispose() {
-    inputHandler.dispose();
+    _gameLogic.dispose();
     super.dispose();
   }
 
@@ -29,18 +33,22 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Move the Square')),
       body: KeyboardListener(
-        focusNode: inputHandler.focusNode,
-        onKeyEvent: inputHandler.handleKeyEvent,
+        focusNode: _inputHandler.focusNode,
+        onKeyEvent: _inputHandler.handleKeyEvent,
         autofocus: true,
         child: GestureDetector(
-          onTapDown: inputHandler.handleTapDown,
+          onTapDown: _inputHandler.handleTapDown,
           child: MouseRegion(
-            onHover: inputHandler.handleHover,
+            onHover: _inputHandler.handleHover,
             child: Column(
               children: [
                 Expanded(
-                  child: CustomPaint(
-                    painter: Painter(inputHandler.state),
+                  child: ChangeNotifierProvider<GameLogic>.value(
+
+                  )
+                  
+                  CustomPaint(
+                    painter: Painter(_gameLogic.state),
                     child: Container(),
                   ),
                 ),
@@ -48,12 +56,12 @@ class _MainScreenState extends State<MainScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: inputHandler.moveLeft,
+                      onPressed: () => _gameLogic.moveBlue(Offset(-10, 0)),
                       child: const Text('Left'),
                     ),
                     const SizedBox(width: 20),
                     ElevatedButton(
-                      onPressed: inputHandler.moveRight,
+                      onPressed: () => _gameLogic.moveBlue(Offset(10, 0)),
                       child: const Text('Right'),
                     ),
                   ],

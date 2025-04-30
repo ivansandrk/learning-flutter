@@ -1,45 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'game_state.dart';
+import 'game_logic.dart';
+import 'input.dart';
 
 class InputHandler {
-  final void Function(VoidCallback) setState;
+  Input input = Input();
+  final GameLogic _gameLogic;
   final FocusNode focusNode = FocusNode();
-  // TODO(isandrk): Game state should be owned by logic? Or even one lvl above.
-  GameState state = GameState();
 
-  // TODO(isandrk): setState goes in the logic. or state itself?
-  InputHandler(this.setState);
-
-  void move(Offset offset) => setState(() => state.bluePos += offset);
-  void moveLeft() => move(Offset(-10, 0));
-  void moveRight() => move(Offset(10, 0));
-  void moveUp() => move(Offset(0, -10));
-  void moveDown() => move(Offset(0, 10));
+  InputHandler(this._gameLogic);
 
   void handleKeyEvent(KeyEvent event) {
-    if (event is! KeyDownEvent) return;
-
+    input = Input();
+    final isKeyDown = event is KeyDownEvent;
     switch (event.logicalKey) {
-      case LogicalKeyboardKey.arrowLeft:
-        moveLeft();
-      case LogicalKeyboardKey.arrowRight:
-        moveRight();
       case LogicalKeyboardKey.arrowUp:
-        moveUp();
+        input.up = isKeyDown;
       case LogicalKeyboardKey.arrowDown:
-        moveDown();
+        input.down = isKeyDown;
+      case LogicalKeyboardKey.arrowLeft:
+        input.left = isKeyDown;
+      case LogicalKeyboardKey.arrowRight:
+        input.right = isKeyDown;
     }
+
+    _gameLogic.updateInput(input);
   }
 
   void handleTapDown(TapDownDetails tap) {
-    setState(() => state.bluePos = tap.localPosition);
+    input = Input();
+    input.tap = tap.localPosition;
+    // setState(() => state.bluePos = tap.localPosition);
+
+    _gameLogic.updateInput(input);
   }
 
   void handleHover(PointerHoverEvent pointer) {
-    setState(() => state.redPos = pointer.localPosition);
+    input = Input();
+    input.hover = pointer.localPosition;
+    // setState(() => state.redPos = pointer.localPosition);
+
+    _gameLogic.updateInput(input);
   }
 
+  // TODO(isandrk): When is dispose needed?
   void dispose() {
     focusNode.dispose();
   }

@@ -26,6 +26,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: MainScreen());
+    return const MaterialApp(
+      // No reformat.
+      title: 'Ivan\'s test game',
+      home: MainScreen(),
+    );
   }
 }
