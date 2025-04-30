@@ -65,8 +65,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildGameCanvas() {
     return Stack(
       children: [
-        AnimatedBuilder(
-          animation: _gameLogic,
+        ListenableBuilder(
+          listenable: _gameLogic,
           builder: (context, _) {
             return CustomPaint(
               // painter: Painter(_gameLogic.state.value),
