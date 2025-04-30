@@ -46,19 +46,9 @@ class _MainScreenState extends State<MainScreen> {
         onTapDown: _inputHandler.handleTapDown,
         child: MouseRegion(
           onHover: _inputHandler.handleHover,
-          child: _buildGameContent(),
+          child: _buildGameCanvas(),
         ),
       ),
-    );
-  }
-
-  Widget _buildGameContent() {
-    return Column(
-      children: [
-        Expanded(child: _buildGameCanvas()),
-        _buildControls(),
-        const SizedBox(height: 20),
-      ],
     );
   }
 
@@ -69,28 +59,10 @@ class _MainScreenState extends State<MainScreen> {
           listenable: _gameLogic,
           builder: (context, _) {
             return CustomPaint(
-              // painter: Painter(_gameLogic.state.value),
               painter: Painter(_gameLogic.state),
               child: Container(),
             );
           },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildControls() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () => _gameLogic.moveBlue(Offset(-10, 0)),
-          child: const Text('Left'),
-        ),
-        const SizedBox(width: 20),
-        ElevatedButton(
-          onPressed: () => _gameLogic.moveBlue(Offset(10, 0)),
-          child: const Text('Right'),
         ),
       ],
     );
