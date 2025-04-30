@@ -9,7 +9,7 @@ class InputHandler {
   // TODO: InputEventBus? Another middle-man class, probably overkill.
   //       But that does go in the direction of my Event based system...
   //       (everything becomes an event).
-  final _stream = StreamController<InputEvent>();
+  final _stream = StreamController<InputEvent>.broadcast();
 
   Stream<InputEvent> get stream => _stream.stream;
 
