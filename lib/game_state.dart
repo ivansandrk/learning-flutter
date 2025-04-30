@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
 class GameState {
-  Offset bluePos = Offset.zero;
-  Offset? redPos;
+  final bluePos = ValueNotifier<Offset>(Offset.zero);
+  final redPos = ValueNotifier<Offset?>(null);
 }

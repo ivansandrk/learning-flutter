@@ -12,14 +12,16 @@ class Painter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawCircle(state.bluePos, blueSize, blueColor);
-    if (state.redPos != null) {
-      canvas.drawCircle(state.redPos!, redSize, redColor);
+    canvas.drawCircle(state.bluePos.value, blueSize, blueColor);
+    if (state.redPos.value != null) {
+      canvas.drawCircle(state.redPos.value!, redSize, redColor);
     }
   }
 
   @override
   bool shouldRepaint(covariant Painter old) {
-    return old.state != state;
+    // TODO: Comparing old and new state doesn't work properly.
+    // return old.state != state;
+    return true;
   }
 }

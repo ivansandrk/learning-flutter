@@ -18,15 +18,20 @@ class GameLogic extends ChangeNotifier {
   // GameLogic(this.setState);
   GameLogic() {
     // Start the game loop.
-    _timer = Timer.periodic(const Duration(milliseconds: 16), update);
+    _timer = Timer.periodic(const Duration(milliseconds: 16), updateTimer);
   }
 
   // TODO(isandrk): Game logic should be run every frame.
   void updateInput(Input input) {
     _input = input;
+    // update();
   }
 
-  void update(Timer timer) {
+  void updateTimer(Timer timer) {
+    update();
+  }
+
+  void update() {
     // Process input events.
     if (_input.up) moveBlue(Offset(0, -10));
     if (_input.down) moveBlue(Offset(0, 10));
@@ -35,23 +40,33 @@ class GameLogic extends ChangeNotifier {
 
     if (_input.tap != null) {
       // TODO(isandrk): Update UI?
-      state.bluePos = _input.tap!;
+      // var newState = GameState(
+      //   // bluePos: // TODO?
+      // );
+      // newState.bluePos.value = state.bluePos.value;
+      // newState.redPos.value = state.redPos.value;
+      // newState.bluePos.value = _input.tap!;
+      // state = newState;
+      // state.bluePos = newState.bluePos;
+      state.bluePos.value = _input.tap!;
     }
 
     if (_input.hover != null) {
       // TODO(isandrk): Update UI?
-      state.redPos = _input.hover!;
+      state.redPos.value = _input.hover!;
+      // print('_input.hover: ${_input.hover!}');
     }
 
-    notifyListeners();
+    //notifyListeners();
   }
 
   void moveBlue(Offset offset) {
     // TODO(isandrk): This needs to update UI somehow?
     // Could either be here, or in GameState.
-    state.bluePos += offset;
+    state.bluePos.value += offset;
+
     // setState(() => state.bluePos += offset);
-    notifyListeners();
+    //notifyListeners();
   }
 
   @override
