@@ -13,13 +13,16 @@ class GameLogic extends ChangeNotifier {
   final state = GameState();
   late Timer _timer;
   late final StreamSubscription<InputEvent> _sub;
+  late final Stream<InputEvent> _stream;
 
   GameLogic(Stream<InputEvent> stream) {
     // TODO: Having a queue here to collect the events would be nice, so they
     // could be processed when the GameLogic would normally be run by the timer.
     _sub = stream.listen(handleInputEvent);
+    // _sub.pause();
+    // _stream = stream;
     // Start the game loop.
-    _timer = Timer.periodic(const Duration(milliseconds: 16), updateTimer);
+    _timer = Timer.periodic(const Duration(milliseconds: 16), update);
   }
 
   @override
@@ -46,12 +49,12 @@ class GameLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTimer(Timer timer) {
-    update();
-  }
-
-  void update() {
+  void update(Timer timer) {
+    // _sub = _stream.listen(handleInputEvent);
+    // _sub.cancel();
     // notifyListeners();
+    _sub.resume();
+    Future.microtask(_sub.pause);
   }
 
   void moveBlue(Offset offset) {
