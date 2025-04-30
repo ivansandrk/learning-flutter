@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
 import 'game_logic.dart';
-import 'game_state.dart';
 import 'input_handler.dart';
 import 'painter.dart';
 
@@ -53,18 +51,14 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildGameCanvas() {
-    return Stack(
-      children: [
-        ListenableBuilder(
-          listenable: _gameLogic,
-          builder: (context, _) {
-            return CustomPaint(
-              painter: Painter(_gameLogic.state),
-              child: Container(),
-            );
-          },
-        ),
-      ],
+    return ListenableBuilder(
+      listenable: _gameLogic,
+      builder: (context, _) {
+        return CustomPaint(
+          painter: Painter(_gameLogic.state),
+          child: Container(),
+        );
+      },
     );
   }
 }
