@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection' show Queue;
 import 'package:flutter/material.dart';
 import 'input_event.dart';
 import 'game_state.dart';
@@ -11,15 +12,18 @@ class GameLogic extends ChangeNotifier {
   // (probably also needs time delta).
   // TODO(isandrk): Here or one level up?
   final state = GameState();
+
   late Timer _timer;
+
   late final StreamSubscription<InputEvent> _sub;
+  var _events = Queue<InputEvent>();
 
   GameLogic(Stream<InputEvent> stream) {
-    // TODO: Having a queue here to collect the events would be nice, so they
-    // could be processed when the GameLogic would normally be run by the timer.
-    _sub = stream.listen(handleInputEvent);
     // Start the game loop.
-    _timer = Timer.periodic(const Duration(milliseconds: 16), updateTimer);
+    _timer = Timer.periodic(const Duration(milliseconds: 16), _update);
+
+    // Subscribe to input events, store them in a queue for later processing.
+    _sub = stream.listen((event) => _events.add(event));
   }
 
   @override
@@ -29,13 +33,21 @@ class GameLogic extends ChangeNotifier {
     super.dispose();
   }
 
+  void _update(Timer timer) {
+    while (_events.isNotEmpty) {
+      final event = _events.removeFirst();
+      handleInputEvent(event);
+    }
+    notifyListeners();
+  }
+
   void handleInputEvent(InputEvent event) {
     // TODO: Can be switch?
     if (event is KeyDownInputEvent) {
-      if (event.key == InputEventKey.up) moveBlue(Offset(0, -10));
-      if (event.key == InputEventKey.down) moveBlue(Offset(0, 10));
-      if (event.key == InputEventKey.left) moveBlue(Offset(-10, 0));
-      if (event.key == InputEventKey.right) moveBlue(Offset(10, 0));
+      if (event.key == InputEventKey.up) _moveBlue(Offset(0, -10));
+      if (event.key == InputEventKey.down) _moveBlue(Offset(0, 10));
+      if (event.key == InputEventKey.left) _moveBlue(Offset(-10, 0));
+      if (event.key == InputEventKey.right) _moveBlue(Offset(10, 0));
     }
     if (event is MouseClickInputEvent) {
       state.bluePos = event.pos;
@@ -46,15 +58,7 @@ class GameLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTimer(Timer timer) {
-    update();
-  }
-
-  void update() {
-    // notifyListeners();
-  }
-
-  void moveBlue(Offset offset) {
+  void _moveBlue(Offset offset) {
     state.bluePos += offset;
   }
 }
