@@ -12,11 +12,9 @@ class GameLogic extends ChangeNotifier {
   // (probably also needs time delta).
   // TODO(isandrk): Here or one level up?
   final state = GameState();
-
-  late Timer _timer;
-
+  late final Timer _timer;
   late final StreamSubscription<InputEvent> _sub;
-  var _events = Queue<InputEvent>();
+  final _events = Queue<InputEvent>();
 
   GameLogic(Stream<InputEvent> stream) {
     // Start the game loop.
@@ -36,12 +34,12 @@ class GameLogic extends ChangeNotifier {
   void _update(Timer timer) {
     while (_events.isNotEmpty) {
       final event = _events.removeFirst();
-      handleInputEvent(event);
+      _handleInputEvent(event);
     }
     notifyListeners();
   }
 
-  void handleInputEvent(InputEvent event) {
+  void _handleInputEvent(InputEvent event) {
     // TODO: Can be switch?
     if (event is KeyDownInputEvent) {
       if (event.key == InputEventKey.up) _moveBlue(Offset(0, -10));

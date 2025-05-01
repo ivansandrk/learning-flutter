@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class InputEvent {
-  // bool up = false;
-  // bool down = false;
-  // bool left = false;
-  // bool right = false;
-
-  // Offset? tap;
-  // Offset? hover;
-}
+abstract class InputEvent {}
 
 enum InputEventKey { up, down, left, right }
 
