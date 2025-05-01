@@ -10,7 +10,8 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin {
   late GameLogic _gameLogic;
   late InputHandler _inputHandler;
 
@@ -18,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _inputHandler = InputHandler();
-    _gameLogic = GameLogic(_inputHandler.stream);
+    _gameLogic = GameLogic(this, _inputHandler.stream);
   }
 
   @override

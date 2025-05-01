@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'dart:collection' show Queue;
+import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'input_event.dart';
 import 'game_state.dart';
 
@@ -12,26 +13,27 @@ class GameLogic extends ChangeNotifier {
   // (probably also needs time delta).
   // TODO(isandrk): Here or one level up?
   final state = GameState();
-  late final Timer _timer;
+
+  // Run the game loop on a ticker connected to vsync.
+  late final Ticker _ticker;
+
+  // Subscribe to input events, store them in a queue for later processing.
   late final StreamSubscription<InputEvent> _sub;
   final _events = Queue<InputEvent>();
 
-  GameLogic(Stream<InputEvent> stream) {
-    // Start the game loop.
-    _timer = Timer.periodic(const Duration(milliseconds: 16), _update);
-
-    // Subscribe to input events, store them in a queue for later processing.
+  GameLogic(TickerProvider vsync, Stream<InputEvent> stream) {
+    _ticker = vsync.createTicker(_onTick)..start();
     _sub = stream.listen((event) => _events.add(event));
   }
 
   @override
   void dispose() {
-    _timer.cancel();
     _sub.cancel();
+    _ticker.dispose();
     super.dispose();
   }
 
-  void _update(Timer timer) {
+  void _onTick(Duration elapsed) {
     while (_events.isNotEmpty) {
       final event = _events.removeFirst();
       _handleInputEvent(event);
