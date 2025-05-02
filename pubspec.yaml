@@ -1,5 +1,5 @@
-name: empty_app
-description: "A new Flutter project."
+name: learning_flutter
+description: "Personal experimental project to learn Flutter (and Dart)"
 publish_to: 'none'
 version: 0.1.0
 
@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  #provider: ^6.1.5
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +17,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto[wdth,wght].ttf
