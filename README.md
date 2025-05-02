@@ -13,9 +13,11 @@ Event system:
   * Events are public on the Logic
   * ... or Logic sends an Event defined on the Graphics?
   * ... what is really the difference between Event and Message here? Maybe just semantics and how we call them?
+
 Message system:
 * Logic subsystem sends a message to the Graphics subsystem
   * Messages are public on the Graphics
+
 Conclusion:
 * Event and Message ideas are complimentary, use them both.
 * Events defined in the current system and broadcast by it;
