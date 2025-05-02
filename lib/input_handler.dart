@@ -1,21 +1,27 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'input_event.dart';
+import 'package:flutter/material.dart' hide KeyEvent;
+import 'package:flutter/services.dart' hide KeyEvent;
+import 'package:flutter/services.dart' as flutter show KeyEvent;
+import 'input_event.dart' as internal;
+
+// The name 'KeyEvent' is defined in the libraries
+// 'package:empty_app/input_event.dart' and
+// 'package:flutter/src/services/hardware_keyboard.dart
+// (via package:flutter/services.dart)'.
 
 class InputHandler {
   final FocusNode focusNode = FocusNode();
   // TODO: StreamController / StreamController.broadcast().
-  // TODO: InputEventBus? Another middle-man class, probably overkill.
+  // TODO: internal.InputEventBus? Another middle-man class, probably overkill.
   //       But that does go in the direction of my Event based system...
   //       (everything becomes an event).
-  final _stream = StreamController<InputEvent>.broadcast();
+  final _stream = StreamController<internal.InputEvent>.broadcast();
 
-  Stream<InputEvent> get stream => _stream.stream;
+  Stream<internal.InputEvent> get stream => _stream.stream;
 
   InputHandler();
 
-  void emit(InputEvent event) {
+  void emit(internal.InputEvent event) {
     _stream.add(event);
   }
 
@@ -25,31 +31,31 @@ class InputHandler {
     focusNode.dispose();
   }
 
-  void handleKeyEvent(KeyEvent event) {
-    InputEventKey? key;
+  void handleKeyEvent(flutter.KeyEvent event) {
+    internal.InputEventKey? key;
     switch (event.logicalKey) {
       case LogicalKeyboardKey.arrowUp:
-        key = InputEventKey.up;
+        key = internal.InputEventKey.up;
       case LogicalKeyboardKey.arrowDown:
-        key = InputEventKey.down;
+        key = internal.InputEventKey.down;
       case LogicalKeyboardKey.arrowLeft:
-        key = InputEventKey.left;
+        key = internal.InputEventKey.left;
       case LogicalKeyboardKey.arrowRight:
-        key = InputEventKey.right;
+        key = internal.InputEventKey.right;
     }
     // TODO: This is gonna blow on any other key.
     if (event is KeyDownEvent) {
-      return emit(KeyDownInputEvent(key!));
+      return emit(internal.KeyDownEvent(key!));
     } else {
-      return emit(KeyUpInputEvent(key!));
+      return emit(internal.KeyUpEvent(key!));
     }
   }
 
   void handleTapDown(TapDownDetails tap) {
-    emit(MouseClickInputEvent(tap.localPosition));
+    emit(internal.MouseClickEvent(tap.localPosition));
   }
 
   void handleHover(PointerHoverEvent pointer) {
-    emit(MouseMoveInputEvent(pointer.localPosition));
+    emit(internal.MouseMoveEvent(pointer.localPosition));
   }
 }

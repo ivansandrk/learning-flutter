@@ -6,24 +6,28 @@ enum InputEventKey { up, down, left, right }
 
 // TODO: Combine KeyDown and KeyUp events.
 // Lol that's exactly what Flutter framework does.
-class KeyDownInputEvent extends InputEvent {
+
+class KeyEvent extends InputEvent {
   final InputEventKey key;
-  KeyDownInputEvent(this.key);
+  KeyEvent(this.key);
 }
 
-class KeyUpInputEvent extends InputEvent {
-  final InputEventKey key;
-  KeyUpInputEvent(this.key);
+class KeyDownEvent extends KeyEvent {
+  KeyDownEvent(super.key);
 }
 
-class MouseClickInputEvent extends InputEvent {
+class KeyUpEvent extends KeyEvent {
+  KeyUpEvent(super.key);
+}
+
+class MouseClickEvent extends InputEvent {
   final Offset pos;
-  MouseClickInputEvent(this.pos);
+  MouseClickEvent(this.pos);
 }
 
-class MouseMoveInputEvent extends InputEvent {
+class MouseMoveEvent extends InputEvent {
   final Offset pos;
-  MouseMoveInputEvent(this.pos);
+  MouseMoveEvent(this.pos);
 }
 
 // input_handler writes to input

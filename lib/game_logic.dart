@@ -43,16 +43,16 @@ class GameLogic extends ChangeNotifier {
 
   void _handleInputEvent(InputEvent event) {
     // TODO: Can be switch?
-    if (event is KeyDownInputEvent) {
+    if (event is KeyDownEvent) {
       if (event.key == InputEventKey.up) _moveBlue(Offset(0, -10));
       if (event.key == InputEventKey.down) _moveBlue(Offset(0, 10));
       if (event.key == InputEventKey.left) _moveBlue(Offset(-10, 0));
       if (event.key == InputEventKey.right) _moveBlue(Offset(10, 0));
     }
-    if (event is MouseClickInputEvent) {
+    if (event is MouseClickEvent) {
       state.bluePos = event.pos;
     }
-    if (event is MouseMoveInputEvent) {
+    if (event is MouseMoveEvent) {
       state.redPos = event.pos;
     }
     notifyListeners();
