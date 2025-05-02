@@ -19,13 +19,11 @@ class InputHandler {
 
   Stream<internal.InputEvent> get stream => _stream.stream;
 
-  InputHandler();
-
   void emit(internal.InputEvent event) {
     _stream.add(event);
   }
 
-  // TODO(isandrk): When is dispose needed?
+  // TODO: When is dispose needed?
   void dispose() {
     _stream.close();
     focusNode.dispose();

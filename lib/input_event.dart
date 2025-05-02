@@ -32,7 +32,7 @@ class MouseMoveEvent extends InputEvent {
 
 // input_handler writes to input
 // logic reads from input (and resets it?)
-// TODO(isandrk): Or who resets input?
+// TODO: Or who resets input?
 // Must be logic, when it processes and input event.
 // InputHandler queues input events, logic processes them.
 // Alternately, Input is turned into InputEvent, and processed one by one in

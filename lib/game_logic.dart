@@ -11,7 +11,7 @@ class GameLogic extends ChangeNotifier {
   // GameLogic could be just one UpdateState pure function;
   // takes previous state and input and outputs next state.
   // (probably also needs time delta).
-  // TODO(isandrk): Here or one level up?
+  // TODO: Here or one level up?
   final state = GameState();
 
   // Run the game loop on a ticker connected to vsync.
