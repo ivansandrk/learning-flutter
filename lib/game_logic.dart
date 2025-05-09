@@ -6,8 +6,6 @@ import 'input_event.dart';
 import 'game_state.dart';
 
 class GameLogic extends ChangeNotifier {
-  // TODO: Update UI in GameState directly?
-  //       GameState.setBlue() { blue = newBlue; notifyListeners(); }
   // GameLogic could be just one UpdateState pure function;
   // takes previous state and input and outputs next state.
   // (probably also needs time delta).
