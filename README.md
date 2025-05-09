@@ -4,6 +4,11 @@ Experimenting with Flutter concepts. Drawing, handling input, moving stuff aroun
 
 ## Notes
 
+### TODOs
+
+* Tests
+  * Some unittests, some integration tests (Flutter framework)
+
 ### Event system (vs message system?)
 
 Event system is pull based, message system is push based. They change the order of dependence. Example:
