@@ -4,14 +4,8 @@ import 'package:flutter/services.dart' hide KeyEvent;
 import 'package:flutter/services.dart' as flutter show KeyEvent;
 import 'input_event.dart' as internal;
 
-// The name 'KeyEvent' is defined in the libraries
-// 'package:empty_app/input_event.dart' and
-// 'package:flutter/src/services/hardware_keyboard.dart
-// (via package:flutter/services.dart)'.
-
 class InputHandler {
   final FocusNode focusNode = FocusNode();
-  // TODO: StreamController / StreamController.broadcast().
   // TODO: internal.InputEventBus? Another middle-man class, probably overkill.
   //       But that does go in the direction of my Event based system...
   //       (everything becomes an event).
