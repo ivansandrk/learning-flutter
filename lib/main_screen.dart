@@ -25,6 +25,7 @@ class _MainScreenState extends State<MainScreen>
   @override
   void dispose() {
     _gameLogic.dispose();
+    _inputHandler.dispose();
     super.dispose();
   }
 

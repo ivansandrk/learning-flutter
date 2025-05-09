@@ -17,7 +17,6 @@ class InputHandler {
     _stream.add(event);
   }
 
-  // TODO: When is dispose needed?
   void dispose() {
     _stream.close();
     focusNode.dispose();
