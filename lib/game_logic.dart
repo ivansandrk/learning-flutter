@@ -34,11 +34,12 @@ class GameLogic extends ChangeNotifier {
   }
 
   void _onTick(Duration elapsed) {
+    bool shouldNotifyListeners = _events.isNotEmpty;
     while (_events.isNotEmpty) {
       final event = _events.removeFirst();
       _handleInputEvent(event);
     }
-    // notifyListeners();
+    if (shouldNotifyListeners) notifyListeners();
   }
 
   void _handleInputEvent(InputEvent event) {
@@ -55,7 +56,6 @@ class GameLogic extends ChangeNotifier {
     if (event is MouseMoveEvent) {
       state.redPos = event.pos;
     }
-    notifyListeners();
   }
 
   void _moveBlue(Offset offset) {
