@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
+// TODO: Kill this class and simply replace with Flutter framework?
 abstract class InputEvent {}
 
 enum InputEventKey { up, down, left, right }
-
-// TODO: Combine KeyDown and KeyUp events.
-// Lol that's exactly what Flutter framework does.
 
 class KeyEvent extends InputEvent {
   final InputEventKey key;
@@ -20,23 +18,18 @@ class KeyUpEvent extends KeyEvent {
   KeyUpEvent(super.key);
 }
 
-class MouseClickEvent extends InputEvent {
+class MouseEvent extends InputEvent {
   final Offset pos;
-  MouseClickEvent(this.pos);
+  MouseEvent(this.pos);
 }
 
-class MouseMoveEvent extends InputEvent {
-  final Offset pos;
-  MouseMoveEvent(this.pos);
+class MouseClickEvent extends MouseEvent {
+  MouseClickEvent(super.pos);
 }
 
-// input_handler writes to input
-// logic reads from input (and resets it?)
-// TODO: Or who resets input?
-// Must be logic, when it processes and input event.
-// InputHandler queues input events, logic processes them.
-// Alternately, Input is turned into InputEvent, and processed one by one in
-// GameLogic.
+class MouseMoveEvent extends MouseEvent {
+  MouseMoveEvent(super.pos);
+}
 
 /**
  * class Event {}
