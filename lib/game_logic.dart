@@ -38,7 +38,7 @@ class GameLogic extends ChangeNotifier {
       final event = _events.removeFirst();
       _handleInputEvent(event);
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   void _handleInputEvent(InputEvent event) {

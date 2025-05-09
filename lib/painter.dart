@@ -8,7 +8,7 @@ final Paint redColor = Paint()..color = Colors.red;
 
 class Painter extends CustomPainter {
   final GameState state;
-  Painter(this.state);
+  Painter(GameState orig) : state = orig.copy();
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -20,8 +20,6 @@ class Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant Painter old) {
-    // TODO: Comparing old and new state doesn't work properly.
-    // return old.state != state;
-    return true;
+    return old.state != state;
   }
 }
