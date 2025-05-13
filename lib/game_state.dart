@@ -20,5 +20,5 @@ class GameState {
   int get hashCode => Object.hash(bluePos, redPos);
 
   @override
-  String toString() => 'GameState($bluePos, $redPos)';
+  String toString() => 'GameState(bluePos: $bluePos, redPos: $redPos)';
 }

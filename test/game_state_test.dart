@@ -2,6 +2,13 @@ import 'package:test/test.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/game_state.dart';
 
+GameState _create(Offset bluePos, Offset? redPos) {
+  var state = GameState();
+  state.bluePos = bluePos;
+  state.redPos = redPos;
+  return state;
+}
+
 void main() {
   test('Constructor', () {
     final state = GameState();
@@ -18,43 +25,38 @@ void main() {
   });
 
   test('Copy', () {
-    var state = GameState();
-    state.bluePos = Offset(-1, -2);
-    state.redPos = Offset(10, 20);
+    final state = _create(Offset(-1, -2), Offset(10, 20));
     var copy = state.copy();
-    expect(copy, isNot(same(state)));
-    expect(copy, state);
+    expect(copy, isNot(same(state))); // Not same instance.
     expect(copy.bluePos, state.bluePos);
     expect(copy.redPos, state.redPos);
     copy.bluePos = Offset(-3, -4);
     copy.redPos = null;
-    expect(copy, isNot(state));
     expect(copy.bluePos, isNot(state.bluePos));
     expect(copy.redPos, isNot(state.redPos));
   });
 
-  // TODO: eq hash tostr tests
+  test('Equality', () {
+    final state = _create(Offset(-1, -2), Offset(10, 20));
+    final equal = _create(Offset(-1, -2), Offset(10, 20));
+    final notEqual = _create(Offset(1, 2), Offset(3, 4));
+    expect(equal, state);
+    expect(equal, isNot(same(state))); // Not same instance.
+    expect(notEqual, isNot(state));
+  });
+
+  test('Hash', () {
+    final state = _create(Offset(1, 2), Offset(3, 4));
+    final sameHash = _create(Offset(1, 2), Offset(3, 4));
+    final diffHash = _create(Offset(1, 2), null);
+    expect(sameHash.hashCode, state.hashCode);
+    expect(diffHash.hashCode, isNot(state.hashCode));
+  });
+
+  test('ToStr', () {
+    final state = _create(Offset(1, 2), Offset(3, 4));
+    final toStr =
+        'GameState(bluePos: Offset(1.0, 2.0), redPos: Offset(3.0, 4.0))';
+    expect(state.toString(), toStr);
+  });
 }
-
-// class GameState {
-//   Offset bluePos = Offset.zero;
-//   Offset? redPos;
-
-//   GameState copy() {
-//     var newState = GameState();
-//     newState.bluePos = bluePos;
-//     newState.redPos = redPos;
-//     return newState;
-//   }
-
-//   @override
-//   bool operator ==(Object other) =>
-//       identical(this, other) ||
-//       other is GameState && other.bluePos == bluePos && other.redPos == redPos;
-
-//   @override
-//   int get hashCode => Object.hash(bluePos, redPos);
-
-//   @override
-//   String toString() => 'GameState($bluePos, $redPos)';
-// }
